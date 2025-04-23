@@ -48,5 +48,24 @@ describe("E2E test for the Quiz app", () => {
       "contain.text",
       "Which of the following is a mutable data type in Python?"
     );
+
+    // check if 3rd question appears
+    cy.get("h2").should(
+      "contain.text",
+      "What is the keyword used to define a function in Python?"
+    );
+    // check if 4th question appears
+    cy.get("h2").should(
+      "contain.text",
+      "Which of the following is used to create an empty set?"
+    );
+    // when all questions are answered then the quiz ends
+    cy.get("button").eq(0).click();
+
+    //then I can view my score
+    cy.get("h2").should("contain.text", "Your score is 1 out of 4");
+    // then I can restart the quiz
+    cy.get("button").should("contain.text", "Restart Quiz");
+    cy.get("button").click();
   });
 });
