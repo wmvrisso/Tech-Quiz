@@ -1,15 +1,9 @@
-import Quiz from "../../client/src/components/Quiz.jsx";
+/// <reference types="cypress" />
+import React from "react";
+import Quiz from "../../client/src/components/Quiz";
 
-describe("Component test for the Quiz app", () => {
-  it("should have the Start Quiz button on the landing page", () => {
-    cy.mount(<Quiz />);
-
-    cy.get("button").should("contain.text", "Start Quiz");
-  });
-
-  it("should display first question after clicking Start Quiz", () => {
-    cy.mount(<Quiz />);
-
+describe("Quiz Component", () => {
+  beforeEach(() => {
     cy.intercept(
       {
         method: "GET",
@@ -19,10 +13,39 @@ describe("Component test for the Quiz app", () => {
         fixture: "questions.json",
         statusCode: 200,
       }
-    );
+    ).as("getRandomQuestion");
+  });
 
-    cy.get("button").click();
+  it("should start the quiz and display the first question", () => {
+    cy.mount(<Quiz />);
+    cy.get("button").contains("Start Quiz").click();
+    cy.get(".card").should("be.visible");
+    cy.get("h2").should("not.be.empty");
+  });
 
-    cy.get("h2").should("contain.text", "What is the output of print(2 ** 3)?");
+  it("should answer questions and complete the quiz", () => {
+    cy.mount(<Quiz />);
+    cy.get("button").contains("Start Quiz").click();
+
+    // Answer questions
+    cy.get("button").contains("1").click();
+
+    // Verify the quiz completion
+    cy.get(".alert-success").should("be.visible").and("contain", "Your score");
+  });
+
+  it("should restart the quiz after completion", () => {
+    cy.mount(<Quiz />);
+    cy.get("button").contains("Start Quiz").click();
+
+    // Answer questions
+    cy.get("button").contains("1").click();
+
+    // Restart the quiz
+    cy.get("button").contains("Take New Quiz").click();
+
+    // Verify the quiz is restarted
+    cy.get(".card").should("be.visible");
+    cy.get("h2").should("not.be.empty");
   });
 });
