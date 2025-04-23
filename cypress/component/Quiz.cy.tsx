@@ -1,9 +1,15 @@
 /// <reference types="cypress" />
-import React from "react";
 import Quiz from "../../client/src/components/Quiz";
 
 describe("Quiz Component", () => {
-  beforeEach(() => {
+  it("should have the start Quiz button on the landing page", () => {
+    cy.mount(<Quiz />);
+
+    cy.get("button").contains("Start Quiz").should("be.visible");
+  });
+
+  it("should start the quiz and display the first question", () => {
+    cy.mount(<Quiz />);
     cy.intercept(
       {
         method: "GET",
@@ -14,10 +20,6 @@ describe("Quiz Component", () => {
         statusCode: 200,
       }
     ).as("getRandomQuestion");
-  });
-
-  it("should start the quiz and display the first question", () => {
-    cy.mount(<Quiz />);
     cy.get("button").contains("Start Quiz").click();
     cy.get(".card").should("be.visible");
     cy.get("h2").should("not.be.empty");
@@ -25,9 +27,22 @@ describe("Quiz Component", () => {
 
   it("should answer questions and complete the quiz", () => {
     cy.mount(<Quiz />);
+    cy.intercept(
+      {
+        method: "GET",
+        url: "/api/questions/random",
+      },
+      {
+        fixture: "questions.json",
+        statusCode: 200,
+      }
+    ).as("getRandomQuestion");
     cy.get("button").contains("Start Quiz").click();
 
     // Answer questions
+    cy.get("button").contains("1").click();
+    cy.get("button").contains("1").click();
+    cy.get("button").contains("1").click();
     cy.get("button").contains("1").click();
 
     // Verify the quiz completion
@@ -36,9 +51,22 @@ describe("Quiz Component", () => {
 
   it("should restart the quiz after completion", () => {
     cy.mount(<Quiz />);
+    cy.intercept(
+      {
+        method: "GET",
+        url: "/api/questions/random",
+      },
+      {
+        fixture: "questions.json",
+        statusCode: 200,
+      }
+    ).as("getRandomQuestion");
     cy.get("button").contains("Start Quiz").click();
 
     // Answer questions
+    cy.get("button").contains("1").click();
+    cy.get("button").contains("1").click();
+    cy.get("button").contains("1").click();
     cy.get("button").contains("1").click();
 
     // Restart the quiz

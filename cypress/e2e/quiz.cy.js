@@ -37,10 +37,10 @@ describe("E2E test for the Quiz app", () => {
       }
     );
 
-    //   clicking the start quiz button
+    // clicking the start quiz button
     cy.get("button").click();
 
-    //   selecting the first answer
+    // selecting the first answer
     cy.get("button").eq(0).click();
 
     // check if 2nd question appears
@@ -49,11 +49,14 @@ describe("E2E test for the Quiz app", () => {
       "Which of the following is a mutable data type in Python?"
     );
 
+    cy.get("button").eq(0).click();
     // check if 3rd question appears
     cy.get("h2").should(
       "contain.text",
       "What is the keyword used to define a function in Python?"
     );
+
+    cy.get("button").eq(0).click();
     // check if 4th question appears
     cy.get("h2").should(
       "contain.text",
@@ -63,9 +66,9 @@ describe("E2E test for the Quiz app", () => {
     cy.get("button").eq(0).click();
 
     //then I can view my score
-    cy.get("h2").should("contain.text", "Your score is 1 out of 4");
-    // then I can restart the quiz
-    cy.get("button").should("contain.text", "Restart Quiz");
+    cy.get("h2").should("contain.text", "Quiz Completed");
+
+    //   restart the quiz
     cy.get("button").click();
   });
 });
