@@ -10,7 +10,7 @@ The following demonstrates the testing of an application using End-to-End and Co
 
 ## Video Demo
 
-Video Demo: https://app.screencastify.com/v3/watch/sNHpwlYkCG2oVELtnzJK
+Video Demo: https://drive.google.com/file/d/1s2xgB3S_jR88rzcA0uyXND-wkLz1EGN6/view
 
 ## Contributing
 
